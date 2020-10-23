@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Coding Events</h2>
+
+<p>
+    <a asp-controller="Event" asp-action="Add">New Event</a>
+</p>
+
+<p>
+    <a asp-controller="Event" asp-action="Delete">Delete Event</a>
+</p>
+
+@if (ViewBag.events.Count == 0)
+{
+<p>No events</p>
+} else
+{
+<table class="table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    @foreach (var evt in ViewBag.events)
+    {
+        <tr>
+            <td>@evt.Id</td>
+            <td>@evt.Name</td>
+            <td>@evt.Description</td>
+        </tr>
+    }
+
+</table>
+}
+
+
+
