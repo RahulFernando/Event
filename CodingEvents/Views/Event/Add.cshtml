@@ -1,4 +1,6 @@
-﻿
+﻿@using CodingEvents.ViewModels
+@model AddEventViewModel
+
 @{
     ViewData["Title"] = "Add";
 }
@@ -6,8 +8,25 @@
 <h2>Add Events</h2>
 
 <form method="post">
-    <input type="text" name="name" value="" />
-    <input type="text" name="description" value="" />
-    <input type="submit" value="Submit" />
+    <div asp-controller="Event" asp-action="Add" class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Type">Event Types</label>
+        <select asp-for="Type" asp-items="Model.EventTypes" class="form-control"></select>
+    </div>
+    <input type="submit" value="Submit" class="btn btn-default" />
 </form>
 

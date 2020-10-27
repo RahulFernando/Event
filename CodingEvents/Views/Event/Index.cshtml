@@ -1,4 +1,6 @@
-﻿
+﻿@using CodingEvents.Models
+@model List<Event>
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -13,7 +15,7 @@
     <a asp-controller="Event" asp-action="Delete">Delete Event</a>
 </p>
 
-@if (ViewBag.events.Count == 0)
+@if (Model.Count == 0)
 {
 <p>No events</p>
 } else
@@ -23,14 +25,18 @@
         <th>Id</th>
         <th>Name</th>
         <th>Description</th>
+        <th>Email</th>
+        <th>Type</th>
     </tr>
-    @foreach (var evt in ViewBag.events)
+    @foreach (var evt in Model)
     {
-        <tr>
-            <td>@evt.Id</td>
-            <td>@evt.Name</td>
-            <td>@evt.Description</td>
-        </tr>
+    <tr>
+        <td>@evt.Id</td>
+        <td>@evt.Name</td>
+        <td>@evt.Description</td>
+        <td>@evt.Email</td>
+        <td>@evt.Type</td>
+    </tr>
     }
 
 </table>

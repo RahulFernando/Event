@@ -4,40 +4,64 @@ using System.Linq;
 using System.Threading.Tasks;
 using CodingEvents.Data;
 using CodingEvents.Models;
+using CodingEvents.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CodingEvents.Controllers
 {
     public class EventController : Controller
     {
+        private readonly EventDbContext context;
+
+        public EventController(EventDbContext dbcontext)
+        {
+            context = dbcontext;
+        }
 
         [HttpGet]
         public IActionResult Index()
         {
 
-            ViewBag.events = EventData.GetAll();
+            List<Event> events = context.Events.ToList();
 
-            return View();
+            return View(events);
         }
 
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            AddEventViewModel addEventViewModel = new AddEventViewModel();
+            return View(addEventViewModel);
         }
 
         [HttpPost]
         [Route("/event/add")]
-        public IActionResult Add(string name, string description)
+        public IActionResult Add(AddEventViewModel addEventViewModel)
         {
-            EventData.Add(new Event(name, description));
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+
+                Event newEvent = new Event
+                {
+                    Name = addEventViewModel.Name,
+                    Description = addEventViewModel.Description,
+                    Email = addEventViewModel.Email,
+                    Type = addEventViewModel.Type
+                };
+                context.Events.Add(newEvent);
+                context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            return View(addEventViewModel);
+
         }
 
         [HttpGet]
         public IActionResult Delete()
         {
-            ViewBag.events = EventData.GetAll();
+            ViewBag.events = context.Events.ToList();
             return View();
         }
 
@@ -45,7 +69,12 @@ namespace CodingEvents.Controllers
         public IActionResult Delete(int[] eventIds)
         {
             foreach (var eventId in eventIds)
-                EventData.Remove(eventId);
+            {
+                Event theEvent = context.Events.Find(eventId);
+                context.Events.Remove(theEvent);
+            }
+
+            context.SaveChanges();
 
             return RedirectToAction("Index"); 
         }

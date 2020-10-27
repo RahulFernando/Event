@@ -10,15 +10,20 @@ namespace CodingEvents.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Email { get; set; }
+        public EventType Type { get; set; }
 
-        private static int NextId = 1;
 
-        public Event(string name, string description)
+        public Event()
         {
-            Id = NextId;
+
+        }
+
+        public Event(string name, string description, string email)
+        {
             Name = name;
             Description = description;
-            NextId++;
+            Email = email;
         }
 
 
@@ -28,16 +33,5 @@ namespace CodingEvents.Models
             return Name;
         }
 
-        public override bool Equals(object obj)
-        {
-            var @event = obj as Event;
-            return @event != null &&
-                   Id == @event.Id;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Id);
-        }
     }
 }
